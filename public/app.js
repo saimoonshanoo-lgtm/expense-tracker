@@ -1,3 +1,6 @@
+// This connects to the Supabase library you loaded in index.html
+const { createClient } = supabase;
+const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 let expenses = [];
 let chartInstance = null;
 
@@ -106,4 +109,5 @@ function updateChart(dailyData) {
 }
 
 // Start the app
+
 init();
