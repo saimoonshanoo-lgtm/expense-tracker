@@ -3,51 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expense Dashboard</title>
+    <title>My Finance Wallet</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body class="bg-gray-100 text-gray-800 font-sans p-4 md:p-8">
-    <div class="max-w-4xl mx-auto">
-        <h1 class="text-3xl font-bold mb-6 text-blue-600">My Finance Wallet</h1>
+<body class="bg-gray-100 font-sans text-gray-800">
+
+    <div class="max-w-md mx-auto bg-white min-h-screen shadow-lg">
         
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-blue-500">
-                <h3 class="text-gray-500 text-sm font-semibold">Today</h3>
-                <p class="text-2xl font-bold" id="today-total">$0.00</p>
-            </div>
-            <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-green-500">
-                <h3 class="text-gray-500 text-sm font-semibold">This Week</h3>
-                <p class="text-2xl font-bold" id="week-total">$0.00</p>
-            </div>
-            <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-purple-500">
-                <h3 class="text-gray-500 text-sm font-semibold">This Month</h3>
-                <p class="text-2xl font-bold" id="month-total">$0.00</p>
-            </div>
-        </div>
+        <header class="bg-blue-600 text-white p-4 text-center">
+            <h1 class="text-2xl font-bold">My Finance Wallet</h1>
+        </header>
 
-        <div class="bg-white p-6 rounded-lg shadow-sm mb-8">
-            <h2 class="text-xl font-bold mb-4">Daily Spending (This Month)</h2>
-            <canvas id="spendingChart" height="100"></canvas>
-        </div>
+        <div class="p-4">
+            <div class="mb-4 flex justify-end items-center">
+                <label class="mr-2 font-bold text-gray-700 text-sm">Currency:</label>
+                <select id="currency-select" onchange="changeCurrency(this.value)" class="border border-gray-300 rounded p-1 bg-white text-sm font-semibold">
+                    <option value="USD">USD ($)</option>
+                    <option value="THB">THB (฿)</option>
+                    <option value="MMK">MMK (K)</option>
+                </select>
+            </div>
 
-        <div class="bg-white p-6 rounded-lg shadow-sm">
-            <h2 class="text-xl font-bold mb-4">Recent Expenses</h2>
-            <ul id="expense-list" class="divide-y divide-gray-200">
-                </ul>
+            <div class="grid grid-cols-3 gap-2 mb-6 text-center">
+                <div class="bg-blue-50 p-3 rounded-lg shadow-sm border border-blue-100">
+                    <p class="text-xs text-blue-600 font-bold uppercase">Today</p>
+                    <p id="today-total" class="text-lg font-bold text-gray-800">$0.00</p>
+                </div>
+                <div class="bg-blue-50 p-3 rounded-lg shadow-sm border border-blue-100">
+                    <p class="text-xs text-blue-600 font-bold uppercase">This Week</p>
+                    <p id="week-total" class="text-lg font-bold text-gray-800">$0.00</p>
+                </div>
+                <div class="bg-blue-50 p-3 rounded-lg shadow-sm border border-blue-100">
+                    <p class="text-xs text-blue-600 font-bold uppercase">This Month</p>
+                    <p id="month-total" class="text-lg font-bold text-gray-800">$0.00</p>
+                </div>
+            </div>
+
+            <div class="mb-6 bg-white p-2 rounded-lg border border-gray-200 shadow-sm">
+                <canvas id="spendingChart"></canvas>
+            </div>
+
+            <div>
+                <h2 class="text-lg font-bold mb-3 border-b pb-1 text-gray-700">Recent Expenses</h2>
+                <ul id="expense-list" class="divide-y divide-gray-100">
+                    </ul>
+            </div>
         </div>
     </div>
 
     <script>
-        const SUPABASE_URL = 'https://prkqzmsaxizgvygqdiye.supabase.co';
+        // 🛑🛑 PASTE YOUR REAL SUPABASE DETAILS HERE 🛑🛑
+        const SUPABASE_URL = 'https://prkqzmsaxizgvygqdiye.supabase.co'; 
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBya3F6bXNheGl6Z3Z5Z3FkaXllIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3NjQ3NTYsImV4cCI6MjA4ODM0MDc1Nn0.aK8xFdllATZMl-R2UMcv6GC_pVA6bxt1mxzXkhfxAXI';
-window.supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);  
+
+        // Initialize the Supabase Connection specifically for your database
+        window.supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     </script>
+    
     <script src="app.js"></script>
 </body>
+</html>        
 
-</html>            
 
 
 
