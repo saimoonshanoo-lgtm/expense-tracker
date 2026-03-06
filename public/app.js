@@ -19,7 +19,11 @@ async function init() {
         .from('expenses')
         .select('*')
         .order('created_at', { ascending: false });
-    
+  // 1. Fetch existing data
+    const { data } = await supabaseClient
+        .from('expenses')
+        .select('*')
+        .order('created_at', { ascending: false });  
     expenses = data || [];
     updateDashboard();
 
@@ -108,4 +112,5 @@ function updateChart(dailyData) {
 // Start the app
 
 init();
+
 
