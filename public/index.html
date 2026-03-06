@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-6 text-blue-600">My Finance Wallet</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-blue-500">
+                <h3 class="text-gray-500 text-sm font-semibold">Today</h3>
+                <p class="text-2xl font-bold" id="today-total">$0.00</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-green-500">
+                <h3 class="text-gray-500 text-sm font-semibold">This Week</h3>
+                <p class="text-2xl font-bold" id="week-total">$0.00</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-purple-500">
+                <h3 class="text-gray-500 text-sm font-semibold">This Month</h3>
+                <p class="text-2xl font-bold" id="month-total">$0.00</p>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-sm mb-8">
+            <h2 class="text-xl font-bold mb-4">Daily Spending (This Month)</h2>
+            <canvas id="spendingChart" height="100"></canvas>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-sm">
+            <h2 class="text-xl font-bold mb-4">Recent Expenses</h2>
+            <ul id="expense-list" class="divide-y divide-gray-200">
+                </ul>
+        </div>
+    </div>
+
+    <script>
+        // Replace these with your Supabase details
+        const SUPABASE_URL = 'your_supabase_project_url';
+        const SUPABASE_ANON_KEY = 'your_supabase_anon_public_key';
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>
