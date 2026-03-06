@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Finance Wallet</title>
+    <title>My Money Manager</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -13,32 +13,29 @@
 
     <div class="max-w-md mx-auto bg-white min-h-screen shadow-lg">
         
-        <header class="bg-blue-600 text-white p-4 text-center">
-            <h1 class="text-2xl font-bold">My Finance Wallet</h1>
+        <header class="bg-blue-600 text-white p-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold">My Money Manager</h1>
+            <select id="currency-select" onchange="changeCurrency(this.value)" class="bg-blue-700 text-white border border-blue-500 rounded p-1 text-sm font-semibold outline-none">
+                <option value="USD">USD ($)</option>
+                <option value="THB">THB (฿)</option>
+                <option value="MMK">MMK (K)</option>
+            </select>
         </header>
 
         <div class="p-4">
-            <div class="mb-4 flex justify-end items-center">
-                <label class="mr-2 font-bold text-gray-700 text-sm">Currency:</label>
-                <select id="currency-select" onchange="changeCurrency(this.value)" class="border border-gray-300 rounded p-1 bg-white text-sm font-semibold">
-                    <option value="USD">USD ($)</option>
-                    <option value="THB">THB (฿)</option>
-                    <option value="MMK">MMK (K)</option>
-                </select>
+            <div class="bg-gray-800 text-white p-5 rounded-xl shadow-md mb-4 text-center">
+                <p class="text-sm text-gray-300 font-semibold uppercase tracking-wider mb-1">Total Net Balance</p>
+                <p id="total-balance" class="text-3xl font-bold">$0.00</p>
             </div>
 
-            <div class="grid grid-cols-3 gap-2 mb-6 text-center">
-                <div class="bg-blue-50 p-3 rounded-lg shadow-sm border border-blue-100">
-                    <p class="text-xs text-blue-600 font-bold uppercase">Today</p>
-                    <p id="today-total" class="text-lg font-bold text-gray-800">$0.00</p>
+            <div class="grid grid-cols-2 gap-3 mb-6">
+                <div class="bg-green-50 p-3 rounded-lg border border-green-100 text-center shadow-sm">
+                    <p class="text-xs text-green-600 font-bold uppercase">Monthly Income</p>
+                    <p id="month-income" class="text-lg font-bold text-green-600">+$0.00</p>
                 </div>
-                <div class="bg-blue-50 p-3 rounded-lg shadow-sm border border-blue-100">
-                    <p class="text-xs text-blue-600 font-bold uppercase">This Week</p>
-                    <p id="week-total" class="text-lg font-bold text-gray-800">$0.00</p>
-                </div>
-                <div class="bg-blue-50 p-3 rounded-lg shadow-sm border border-blue-100">
-                    <p class="text-xs text-blue-600 font-bold uppercase">This Month</p>
-                    <p id="month-total" class="text-lg font-bold text-gray-800">$0.00</p>
+                <div class="bg-red-50 p-3 rounded-lg border border-red-100 text-center shadow-sm">
+                    <p class="text-xs text-red-600 font-bold uppercase">Monthly Expenses</p>
+                    <p id="month-expense" class="text-lg font-bold text-red-500">-$0.00</p>
                 </div>
             </div>
 
@@ -47,7 +44,7 @@
             </div>
 
             <div>
-                <h2 class="text-lg font-bold mb-3 border-b pb-1 text-gray-700">Recent Expenses</h2>
+                <h2 class="text-lg font-bold mb-3 border-b pb-1 text-gray-700">Recent Transactions</h2>
                 <ul id="expense-list" class="divide-y divide-gray-100">
                     </ul>
             </div>
@@ -55,7 +52,6 @@
     </div>
 
     <script>
-        // 🛑🛑 PASTE YOUR REAL SUPABASE DETAILS HERE 🛑🛑
         const SUPABASE_URL = 'https://prkqzmsaxizgvygqdiye.supabase.co'; 
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBya3F6bXNheGl6Z3Z5Z3FkaXllIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3NjQ3NTYsImV4cCI6MjA4ODM0MDc1Nn0.aK8xFdllATZMl-R2UMcv6GC_pVA6bxt1mxzXkhfxAXI';
 
@@ -66,6 +62,7 @@
     <script src="app.js"></script>
 </body>
 </html>        
+
 
 
 
