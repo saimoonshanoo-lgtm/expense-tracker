@@ -14,11 +14,6 @@ const isThisWeek = (dateStr) => {
 
 // Initialize Dashboard
 async function init() {
-    // 1. Fetch existing data
-    const { data } = await supabase
-        .from('expenses')
-        .select('*')
-        .order('created_at', { ascending: false });
   // 1. Fetch existing data
     const { data } = await supabaseClient
         .from('expenses')
@@ -27,8 +22,8 @@ async function init() {
     expenses = data || [];
     updateDashboard();
 
-    // 2. Subscribe to real-time updates!
-    supabase.channel('custom-all-channel')
+   // 2. Subscribe to real-time updates!
+    supabaseClient.channel('custom-all-channel')
         .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'expenses' }, (payload) => {
             console.log('New expense received!', payload.new);
             expenses.unshift(payload.new); // Add new expense to the top
@@ -112,5 +107,6 @@ function updateChart(dailyData) {
 // Start the app
 
 init();
+
 
 
