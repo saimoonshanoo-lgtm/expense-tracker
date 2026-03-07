@@ -25,7 +25,8 @@ app.post('/add-expense', async (req, res) => {
     return res.status(401).json({ error: 'Unauthorized: Invalid API Key' });
   }
 
-  const { amount, merchant, timestamp } = req.body;
+  // 💥 NEW: Extract the new Money Manager tags!
+  const { amount, merchant, timestamp, type, category, account } = req.body;
 
   // 2. Validate data
   if (!amount || !merchant || !timestamp) {
@@ -36,21 +37,24 @@ app.post('/add-expense', async (req, res) => {
     // Extract just the date (YYYY-MM-DD) from the timestamp
     const date = timestamp.split('T')[0];
 
-    // 3. Save to database
+    // 3. Save to database with the new columns
     const { data, error } = await supabase
       .from('expenses')
       .insert([{ 
-        amount, 
-        merchant, 
-        date, 
-        created_at: timestamp 
+        amount: amount, 
+        merchant: merchant, 
+        date: date, 
+        created_at: timestamp,
+        type: type || 'expense',              // Defaults to expense if empty
+        category: category || 'Uncategorized', // Defaults to Uncategorized if empty
+        account: account || 'K PLUS'           // Defaults to K PLUS if empty
       }]);
 
     if (error) throw error;
 
-    res.status(200).json({ success: true, message: 'Expense added!' });
+    res.status(200).json({ success: true, message: 'Transaction added successfully!' });
   } catch (error) {
-    console.error('Error adding expense:', error);
+    console.error('Error adding transaction:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
