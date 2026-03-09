@@ -16,8 +16,8 @@
         <header class="bg-blue-600 text-white p-4 flex justify-between items-center">
             <h1 class="text-xl font-bold">My Money Manager</h1>
             <select id="currency-select" onchange="changeCurrency(this.value)" class="bg-blue-700 text-white border border-blue-500 rounded p-1 text-sm font-semibold outline-none">
-                <option value="USD">USD ($)</option>
                 <option value="THB">THB (฿)</option>
+                <option value="USD">USD ($)</option>
                 <option value="MMK">MMK (K)</option>
             </select>
         </header>
@@ -25,17 +25,17 @@
         <div class="p-4">
             <div class="bg-gray-800 text-white p-5 rounded-xl shadow-md mb-4 text-center">
                 <p class="text-sm text-gray-300 font-semibold uppercase tracking-wider mb-1">Total Net Balance</p>
-                <p id="total-balance" class="text-3xl font-bold">$0.00</p>
+                <p id="total-balance" class="text-3xl font-bold">฿0.00</p>
             </div>
 
             <div class="grid grid-cols-2 gap-3 mb-6">
                 <div class="bg-green-50 p-3 rounded-lg border border-green-100 text-center shadow-sm">
                     <p class="text-xs text-green-600 font-bold uppercase">Monthly Income</p>
-                    <p id="month-income" class="text-lg font-bold text-green-600">+$0.00</p>
+                    <p id="month-income" class="text-lg font-bold text-green-600">+฿0.00</p>
                 </div>
                 <div class="bg-red-50 p-3 rounded-lg border border-red-100 text-center shadow-sm">
                     <p class="text-xs text-red-600 font-bold uppercase">Monthly Expenses</p>
-                    <p id="month-expense" class="text-lg font-bold text-red-500">-$0.00</p>
+                    <p id="month-expense" class="text-lg font-bold text-red-500">-฿0.00</p>
                 </div>
             </div>
 
@@ -61,12 +61,4 @@
     
     <script src="app.js"></script>
 </body>
-</html>        
-
-
-
-
-
-
-
-
+</html>
