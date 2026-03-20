@@ -1,4 +1,4 @@
-const supabase = window.supabaseClient;
+const db = window.supabaseClient; // Renamed to avoid the clash!
 
 // 1. Check for saved currency, default to THB if none exists
 let currentCurrency = localStorage.getItem('preferredCurrency') || 'THB';
@@ -30,7 +30,8 @@ function formatCurrency(amount) {
 
 // 4. Fetch data from Supabase
 async function fetchTransactions() {
-    const { data, error } = await supabase
+    // Using our newly named 'db' variable here
+    const { data, error } = await db
         .from('expenses')
         .select('*')
         .order('created_at', { ascending: false });
