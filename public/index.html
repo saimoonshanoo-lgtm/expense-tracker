@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Money Manager</title>
-    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="bg-gray-100 font-sans text-gray-800">
 
-    <div class="max-w-md mx-auto bg-white min-h-screen shadow-lg">
+    <div class="max-w-md mx-auto bg-white min-h-screen shadow-lg relative pb-12">
         
+        <!-- Header -->
         <header class="bg-blue-600 text-white p-4 flex justify-between items-center">
             <h1 class="text-xl font-bold">My Money Manager</h1>
             <select id="currency-select" onchange="changeCurrency(this.value)" class="bg-blue-700 text-white border border-blue-500 rounded p-1 text-sm font-semibold outline-none">
@@ -22,43 +22,69 @@
             </select>
         </header>
 
+        <!-- Dynamic Weekly Budget Warning Banners -->
+        <div id="budget-alert-container" class="hidden px-4 pt-4"></div>
+
         <div class="p-4">
+            <!-- Global Net Balance Box -->
             <div class="bg-gray-800 text-white p-5 rounded-xl shadow-md mb-4 text-center">
                 <p class="text-sm text-gray-300 font-semibold uppercase tracking-wider mb-1">Total Net Balance</p>
                 <p id="total-balance" class="text-3xl font-bold">฿0.00</p>
             </div>
 
-            <div class="grid grid-cols-2 gap-3 mb-6">
-                <div class="bg-green-50 p-3 rounded-lg border border-green-100 text-center shadow-sm">
-                    <p class="text-xs text-green-600 font-bold uppercase">Monthly Income</p>
-                    <p id="month-income" class="text-lg font-bold text-green-600">+฿0.00</p>
+            <!-- Weekly Tracker Stats Card -->
+            <div class="bg-gradient-to-br from-slate-50 to-slate-100 p-4 rounded-xl border border-gray-200 shadow-sm mb-4">
+                <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">🗓️ Current Week Status (Sat - Fri)</h3>
+                <div class="grid grid-cols-2 gap-2 text-center mb-3">
+                    <div class="bg-white p-2 rounded border">
+                        <p class="text-[10px] text-gray-400 font-bold uppercase">Spent This Week</p>
+                        <p id="current-week-spent" class="text-base font-bold text-red-500">฿0.00</p>
+                    </div>
+                    <div class="bg-white p-2 rounded border">
+                        <p class="text-[10px] text-gray-400 font-bold uppercase">Remaining Allowance</p>
+                        <p id="current-week-remaining" class="text-base font-bold text-green-600">฿0.00</p>
+                    </div>
                 </div>
-                <div class="bg-red-50 p-3 rounded-lg border border-red-100 text-center shadow-sm">
-                    <p class="text-xs text-red-600 font-bold uppercase">Monthly Expenses</p>
-                    <p id="month-expense" class="text-lg font-bold text-red-500">-฿0.00</p>
+                <!-- Weekly Progress Bar -->
+                <div class="w-full bg-gray-200 rounded-full h-2.5 relative">
+                    <div id="weekly-progress-bar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    <!-- Marker for the 1330 spending limit -->
+                    <div class="absolute top-0 h-2.5 w-1 bg-black opacity-50" style="left: 88.6%;"></div> 
+                </div>
+                <p class="text-[9px] text-gray-400 text-right mt-1">Daily Limit Line: ฿1,330</p>
+            </div>
+
+            <!-- Financial Buckets Grid -->
+            <div class="grid grid-cols-2 gap-3 mb-6">
+                <div class="bg-teal-50 p-3 rounded-lg border border-teal-100 text-center shadow-sm">
+                    <p class="text-xs text-teal-700 font-bold uppercase">💼 Necessary Savings</p>
+                    <p id="necessity-savings" class="text-lg font-bold text-teal-600">฿0.00</p>
+                </div>
+                <div class="bg-purple-50 p-3 rounded-lg border border-purple-100 text-center shadow-sm">
+                    <p class="text-xs text-purple-700 font-bold uppercase">🎉 Treat Fund</p>
+                    <p id="monthly-treat-fund" class="text-lg font-bold text-purple-600">฿0.00</p>
                 </div>
             </div>
 
-            <div class="mb-6 bg-white p-2 rounded-lg border border-gray-200 shadow-sm">
+            <!-- Spending Breakdown Chart -->
+            <div class="mb-6 bg-white p-2 rounded-lg border border-gray-200 shadow-sm h-48">
                 <canvas id="spendingChart"></canvas>
             </div>
 
+            <!-- Grouped Transaction Container -->
             <div>
-                <h2 class="text-lg font-bold mb-3 border-b pb-1 text-gray-700">Recent Transactions</h2>
-                <div id="expense-list" class="space-y-3">
-                </div>
+                <h2 class="text-lg font-bold mb-3 border-b pb-1 text-gray-700">Monthly Statements</h2>
+                <div id="expense-list" class="space-y-4"></div>
             </div>
         </div>
     </div>
 
+    <!-- Your Supabase setup stays exactly the same -->
     <script>
         const SUPABASE_URL = 'https://prkqzmsaxizgvygqdiye.supabase.co'; 
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBya3F6bXNheGl6Z3Z5Z3FkaXllIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3NjQ3NTYsImV4cCI6MjA4ODM0MDc1Nn0.aK8xFdllATZMl-R2UMcv6GC_pVA6bxt1mxzXkhfxAXI';
-
-        // Initialize the Supabase Connection specifically for your database
         window.supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     </script>
-    
     <script src="app.js"></script>
 </body>
 </html>
